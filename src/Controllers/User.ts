@@ -79,7 +79,6 @@ class UserController {
         })
 
     }
-    // No futuro os usuários poderão usar além do ID para para listar o usuário, poderão usar um link personalizado (premium)
 }
 
 export { UserController }
