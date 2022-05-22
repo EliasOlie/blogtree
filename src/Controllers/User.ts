@@ -20,7 +20,12 @@ class UserController {
                     data: {
                         id: id,
                         username: username,
-                        account_type: account_type
+                        account_type: account_type,
+                    }
+                })
+                await this.adapter.blog.create({
+                    data: {
+                        author: username,
                     }
                 })
                 return res.send(newUser) 
@@ -48,6 +53,22 @@ class UserController {
     async deleteUser(req: Request, res: Response){
         const id = req.params.id
         try {
+            const user = await this.adapter.user.findUnique({
+                where: {
+                    id: id
+                }
+            })
+            
+            const blogId = await this.adapter.blog.findFirst({
+                where: {
+                    author: user!.username
+                }
+            })
+            await this.adapter.blog.delete({
+                where: {
+                    id: blogId!.id
+                }
+            })
             await this.adapter.user.delete({
                 where: {
                     id: id
@@ -56,6 +77,7 @@ class UserController {
                 return res.status(200).send()
             })
         } catch (error) {
+            console.log(error)
             res.status(400).send({Message: "This user does not exists"})
         }
     }
