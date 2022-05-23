@@ -1,3 +1,4 @@
 .env
 dev.md
 node_modules
+.vscode
