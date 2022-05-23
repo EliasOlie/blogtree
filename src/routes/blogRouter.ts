@@ -1,13 +1,15 @@
 import { Router } from "express";
-import { BlogsController } from "../Controllers/Blogs";
-import { PrismaAdapter } from "../infra/prismaAdapter";
-
-const blogsController = new BlogsController(PrismaAdapter)
+import { getBlogByAuthorController } from "../Controllers/Blog/getBlogByAuthor/index";
+import { getBlogByIdController } from "../Controllers/Blog/getBlogById/index";
 
 const blogsRouter = Router()
 
-blogsRouter.get("/:author", async (req, res) => {
-    await blogsController.getBlogByAuthor(req, res)
+blogsRouter.get("/author/:author", async (req, res) => {
+    await getBlogByAuthorController.run(req, res)
+})
+
+blogsRouter.get("/:id", async (req, res) => {
+    getBlogByIdController.run(req, res)
 })
 
 export { blogsRouter }

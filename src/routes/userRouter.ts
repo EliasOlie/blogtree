@@ -22,6 +22,4 @@ userRouter.patch("/update", async (req, res) => {
     await updateUserNameController.run(req, res)
 })
 
-
-
 export { userRouter }
