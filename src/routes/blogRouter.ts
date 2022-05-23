@@ -2,8 +2,7 @@ import { Router } from "express";
 import { BlogsController } from "../Controllers/Blogs";
 import { PrismaAdapter } from "../infra/prismaAdapter";
 
-const adapter = PrismaAdapter
-const blogsController = new BlogsController(adapter)
+const blogsController = new BlogsController(PrismaAdapter)
 
 const blogsRouter = Router()
 
