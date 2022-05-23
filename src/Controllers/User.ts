@@ -37,15 +37,36 @@ class UserController {
 
     async getUser(req: Request, res: Response) {
         const id = req.params.id
-        const user = await this.adapter.user.findUnique({
+        await this.adapter.user.findUnique({
             where: {
                 id: id
             }
-        }).then((userExists) => {
+        }).then(async (userExists) => {
             if (!userExists) {
                 return res.status(400).send({Message: "This user does not exists"})
             }else{
-                return res.send(userExists)
+                await this.adapter.blog.findFirst({
+                    where: {
+                        author: userExists.username
+                    }
+                }).then(async (blog) => {
+                    if(!blog){
+                        //handel no blog message its kinda impossible but???
+                    }else{
+                        await this.adapter.post.findMany({
+                            where: {
+                                author: userExists.username
+                            }
+                        }).then((posts) => {
+                            if (!posts){
+                                res.send({User: userExists, Blog: blog, Posts: "Nothing here yet :/"})
+                            }
+
+                            return res.send({User: userExists, Blog: blog, Posts: posts})
+    
+                        })
+                    }
+                })
             }
         })
     }

@@ -11,7 +11,6 @@ datasource db {
 }
 
 model User {
-
   id           String   @id
   account_type String
   username     String   @unique
@@ -19,11 +18,23 @@ model User {
   modifedAt    DateTime @default(now())
 
   Blog Blog[]
+  Post Post[]
 }
 
 model Blog {
   id     String @id @default(uuid())
   author String
+  posts Post[]
+  user User @relation(fields: [author], references: [username])
+}
+
+model Post {
+  id String @id @default(uuid())
+  author String
+  content String
+  description String
+  blog Blog[]
 
   user User @relation(fields: [author], references: [username])
+
 }
